@@ -6,7 +6,6 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
       trim: true,
     },
     email: {
@@ -15,15 +14,32 @@ const userSchema = new Schema(
       unique: true,
     },
     profile: {
-      age: {
-        type: Number,
-        required: [true, 'Age is required'],
+      dob: {
+        type: Date,
       },
-      fitnessGoal: {
-        type: String,
-        required: [true, 'Fitness Goal is required'],
-      },
+      weight: Schema.Types.Decimal128,
+      height: Number,
       profilePicture: String,
+      description: {
+        type: String,
+        minlength: 200,
+      },
+      gender: {
+        type: String,
+        enum: ['male', 'female', 'others'],
+      },
+      traininglevel: {
+        type: String,
+        enum: ['beginner', 'intermediate', 'advance'],
+      },
+      bodyType: {
+        type: String,
+        enum: ['fat', 'fit', 'skinny'],
+      },
+      goal: {
+        type: String,
+        enum: ['bodybuilding', 'toning', 'weight-loss'],
+      },
     },
     active: {
       type: Boolean,
@@ -54,6 +70,9 @@ const userSchema = new Schema(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    conectionsSent: [{ type: Schema.ObjectId }],
+    connections: [{ type: Schema.ObjectId }],
+    connectionsRecieved: [{ type: Schema.ObjectId }],
   },
   {
     toJSON: { virtuals: true },

@@ -27,7 +27,6 @@ userRouter.post('/forgotPassword', forgotPassword);
 userRouter.patch('/resetPassword/:token', resetPassword);
 
 userRouter.use(protect);
-
 userRouter.patch('/updateMyPassword', updatePassword);
 userRouter.get('/me', getMe, getUser);
 userRouter.patch('/updateMe', updateMe);

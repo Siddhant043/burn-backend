@@ -60,8 +60,9 @@ export default (err, req, res, next) => {
     if (error.name === 'JsonWebTokenError') error = handleJWTError();
     if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
     error = handleValidationErrorDB(error);
-    if (error.name === 'ValidationError')
+    if (error.name === 'ValidationError') {
       error = handleValidationErrorDB(error);
+    }
     if (error.code === 11000) error = handleDuplicateFileDB(error);
 
     sendErrorToProd(error, res);

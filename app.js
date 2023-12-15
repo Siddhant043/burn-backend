@@ -4,6 +4,7 @@ import express from 'express';
 import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
+import cors from 'cors';
 import helmet, { xssFilter } from 'helmet';
 
 import userRouter from './routes/userRoute.js';
@@ -18,6 +19,9 @@ const app = express();
 app.use(helmet());
 
 app.use(express.json());
+
+// cors
+app.use(cors());
 
 // Rate limiting
 const limiter = rateLimit({
