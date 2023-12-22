@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import validator from 'validator';
 
 const userSchema = new Schema(
   {
@@ -12,12 +13,14 @@ const userSchema = new Schema(
       type: String,
       required: [true, 'Email is required'],
       unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'Please provide a valid email'],
     },
     profile: {
       dob: {
         type: Date,
       },
-      weight: Schema.Types.Decimal128,
+      weight: Number,
       height: Number,
       profilePicture: String,
       description: {
@@ -28,11 +31,11 @@ const userSchema = new Schema(
         type: String,
         enum: ['male', 'female', 'others'],
       },
-      traininglevel: {
+      trainingLevel: {
         type: String,
         enum: ['beginner', 'intermediate', 'advance'],
       },
-      bodyType: {
+      fitnessLevel: {
         type: String,
         enum: ['fat', 'fit', 'skinny'],
       },
@@ -86,11 +89,6 @@ userSchema.virtual('workouts', {
   localField: '_id', // this is the key is current model to which we have to refer
 });
 
-userSchema.pre(/^find/, function (next) {
-  // now 'this' keyword will not point to doc, but it will point to current query
-  this.find({ deletedAccount: { $ne: true } });
-  next();
-});
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);

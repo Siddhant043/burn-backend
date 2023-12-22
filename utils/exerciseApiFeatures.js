@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/extensions
-import Exercise from '../models/exerciseModel.js';
+//import Exercise from '../models/exerciseModel.js';
 
 export const filtering = (query) => {
   // eg. url: http://localhost:8000/api/v1/tours?price[gte]=4&difficulty=easy
@@ -36,13 +36,13 @@ export const limiting = (reqHasFields, resultQuery) => {
   return resultQuery.select('-__v');
 };
 
-export const pagination = async (req, resultQuery) => {
+export const pagination = async (req, resultQuery, Model) => {
   // eg. url: http://localhost:8000/api/v1/tours?page=1&limit=3
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || 10;
   const skip = (page - 1) * limit;
   if (req.query.page) {
-    const numTours = await Exercise.countDocuments();
+    const numTours = await Model.countDocuments();
     if (skip >= numTours) {
       throw new Error('This page does not exists');
     }

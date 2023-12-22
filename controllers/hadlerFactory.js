@@ -75,12 +75,11 @@ export const getOne = (Model, popOptions) =>
 export const getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter;
-    if (req.params.tourId) filter = { tour: req.params.tourId };
+    if (req.params.id) filter = { exercise: req.params.id };
     // Filtering
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const filteredQuery = filtering(req.query);
 
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
     let query = Model.find({ ...filteredQuery, ...filter });
 
     // Sorting
@@ -90,7 +89,7 @@ export const getAll = (Model) =>
     query = limiting(req.query.fields, query);
 
     // Pagination
-    query = pagination(req, query);
+    query = pagination(req, query, Model);
 
     const docs = await query;
     res.status(200).json({

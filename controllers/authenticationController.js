@@ -26,9 +26,6 @@ const createSendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     status: 'success',
     authToken,
-    data: {
-      user,
-    },
   });
 };
 export const signUp = catchAsync(async (req, res, next) => {
